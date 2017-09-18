@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  phpserver:
+    build: ./ 
+    ports:
+      - '80:80'
+    volumes:
+      - ./symfony:/var/www/html
+    container_name: my-apache-php-app
+  db:
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: symfony
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+    volumes:
+      - ./mysql/mysql_data:/var/lib/mysql
+    container_name: mysqlserver
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_ARBITRATY: 1
+      PMA_HOST: mysqlserver
+    container_name: myadmin
